@@ -1,9 +1,12 @@
 import 'dart:convert';
-
-// Packages
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Packages
 import 'package:get_it/get_it.dart';
+
+// Services
+import '../services/http_service.dart';
 
 //Model
 import '../models/app_config.dart';
@@ -31,10 +34,6 @@ class _SplashPageState extends State<SplashPage> {
         (_) => widget.onInitializationComplete(),
       ),
     );
-
-    // _setup(context).then(
-    //   (_) => widget.onInitializationComplete(),
-    // );
   }
 
   Future<void> _setup(BuildContext _context) async {
@@ -49,6 +48,9 @@ class _SplashPageState extends State<SplashPage> {
         BASE_IMAGE_API_URL: configData["BASE_IMAGE_API_URL"],
         API_KEY: configData["API_KEY"],
       ),
+    );
+    getIt.registerSingleton<HTTPService>(
+      HTTPService(),
     );
   }
 
