@@ -39,15 +39,15 @@ class MovieTile extends StatelessWidget {
   Widget _movieInfoWidget() {
     return Container(
       height: height,
-      width: width! * 0.76,
+      width: width! * 0.66,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Flexible(
                 child: Container(
@@ -112,7 +112,7 @@ class MovieTile extends StatelessWidget {
     var imagePath = "https://image.tmdb.org/t/p/w500$_imageUrl";
     return Container(
       height: height,
-      width: width! * 0.6,
+      width: width! * 0.35,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(imagePath),
