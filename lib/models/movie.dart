@@ -13,7 +13,7 @@ class Movie {
   final String? backdropPath;
   final String? releaseDate;
   final num? rating;
-  final String? tagline;
+  final num? id;
 
   Movie(
       {this.name,
@@ -24,7 +24,7 @@ class Movie {
       this.backdropPath,
       this.releaseDate,
       this.rating,
-      this.tagline});
+      this.id});
 
   factory Movie.fromJson(Map<String, dynamic> _json) {
     return Movie(
@@ -36,7 +36,7 @@ class Movie {
         backdropPath: _json['backdrop_path'],
         releaseDate: _json['release_date'],
         rating: _json['vote_average'],
-        tagline: _json['tagline']);
+        id: _json['id']);
   }
   String posterURL() {
     final AppConfig _appConfig = GetIt.instance.get<AppConfig>();

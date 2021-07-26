@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _setup(BuildContext _context) async {
     final getIt = GetIt.instance;
 
-    final configFile = await rootBundle.loadString("/config/main.json");
+    final configFile = await rootBundle.loadString("assets/config/main.json");
     final configData = jsonDecode(configFile);
 
     getIt.registerSingleton<AppConfig>(
@@ -65,13 +65,14 @@ class _SplashPageState extends State<SplashPage> {
       title: "Movie Haven",
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Center(
+        // child: Text("Movie Haven"),
         child: Container(
-          height: 200,
-          width: 200,
+          height: 300,
+          width: 300,
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fill,
-              image: AssetImage("/images/logo.jpeg"),
+              image: AssetImage("assets/images/tmdb.png"),
             ),
           ),
         ),

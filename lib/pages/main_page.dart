@@ -1,16 +1,31 @@
 import 'dart:ui';
 
+//Packages
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import 'package:movie_haven/models/movie.dart';
-import 'package:movie_haven/widgets/movie_tile.dart';
 
-//Models
+// Models
+import '../models/movie.dart';
 import '../models/search_category.dart';
+import '../models/main_page_data.dart';
+
+// Controllers
+import '../controllers/main_page_data_controller.dart';
+
+// Widgets
+import '../widgets/movie_tile.dart';
+
+final mainPageDataControllerProvider =
+    StateNotifierProvider<MainPageDataController, MainPageData>((ref) {
+  return MainPageDataController();
+});
 
 class MainPage extends ConsumerWidget {
   double? _deviceHeight;
   double? _deviceWidth;
+
+  late MainPageDataController _mainPageDataController;
+  late MainPageData _mainPageData;
 
   TextEditingController? _searchTextFieldController;
 
@@ -19,6 +34,8 @@ class MainPage extends ConsumerWidget {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
 
+    _mainPageDataController = watch(mainPageDataControllerProvider.notifier);
+    _mainPageData = watch(mainPageDataControllerProvider);
     _searchTextFieldController = TextEditingController();
 
     return _buildUI();
@@ -163,23 +180,8 @@ class MainPage extends ConsumerWidget {
   }
 
   Widget _moviesListViewWidget() {
-    final _movies = [];
+    final List<Movie> _movies = _mainPageData.movies!;
 
-    for (var i = 0; i < 20; i++) {
-      _movies.add(
-        Movie(
-            name: "Mortal Combat",
-            isAdult: false,
-            description:
-                "Washed-up MMA fighter Cole Young, unaware of his heritage, and hunted by Emperor Shang Tsung's best warrior, Sub-Zero, seeks out and trains with Earth's greatest champions as he prepares to stand against the enemies of Outworld in a high stakes battle for the universe.",
-            language: "EN",
-            rating: 7.1,
-            posterPath: "/nkayOAUBUu4mMvyNf9iHSUiPjF1.jpg",
-            backdropPath: "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
-            releaseDate: "2021-04-07",
-            tagline: "Come over Here"),
-      );
-    }
     if (_movies.length != 0) {
       return ListView.builder(
           itemCount: _movies.length,
@@ -189,12 +191,10 @@ class MainPage extends ConsumerWidget {
                   vertical: _deviceHeight! * 0.01, horizontal: 0),
               child: GestureDetector(
                 onTap: () {},
-                child: Container(
-                  child: MovieTile(
-                    movie: _movies[_count],
-                    height: _deviceHeight! * 0.20,
-                    width: _deviceWidth! * 0.85,
-                  ),
+                child: MovieTile(
+                  movie: _movies[_count],
+                  height: _deviceHeight! * 0.20,
+                  width: _deviceWidth! * 0.85,
                 ),
               ),
             );

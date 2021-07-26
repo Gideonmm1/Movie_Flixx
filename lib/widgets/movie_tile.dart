@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-//Packages
-import "package:get_it/get_it.dart";
-
 //Models
 import "../models/movie.dart";
 
 class MovieTile extends StatelessWidget {
+  //final GetIt _getIt = GetIt.instance();
+
   final double? height;
   final double? width;
   final Movie? movie;
@@ -25,12 +24,8 @@ class MovieTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-            child: _moviePosterWidget(movie!.posterPath!),
-          ),
-          Flexible(
-            child: _movieInfoWidget(),
-          ),
+          _moviePosterWidget(movie!.posterURL()),
+          _movieInfoWidget(),
         ],
       ),
     );
@@ -44,32 +39,29 @@ class MovieTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Container(
-                  width: width! * 0.7,
-                  child: Text(
-                    movie!.name!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
+          Container(
+            width: width! * 0.7,
+            child: Text(
+              movie!.name!,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
               ),
-              Flexible(
-                child: Text(
-                  movie!.rating.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
+            ),
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              Text(
+                movie!.rating.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
                 ),
               ),
             ],
@@ -77,20 +69,10 @@ class MovieTile extends StatelessWidget {
           Container(
             padding: EdgeInsets.fromLTRB(0, height! * 0.02, 0, 0),
             child: Text(
-              "Tagline: ${movie!.tagline!}",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(0, height! * 0.02, 0, 0),
-            child: Text(
               "${movie!.releaseDate} | ${movie!.language!.toUpperCase()} | R: ${movie!.isAdult.toString().toUpperCase()}",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 10,
+                fontSize: 12.5,
               ),
             ),
           ),
@@ -100,7 +82,7 @@ class MovieTile extends StatelessWidget {
               movie!.description!,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ],
@@ -109,13 +91,12 @@ class MovieTile extends StatelessWidget {
   }
 
   Widget _moviePosterWidget(String _imageUrl) {
-    var imagePath = "https://image.tmdb.org/t/p/w500$_imageUrl";
     return Container(
       height: height,
       width: width! * 0.35,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(imagePath),
+          image: NetworkImage(_imageUrl),
         ),
       ),
     );
