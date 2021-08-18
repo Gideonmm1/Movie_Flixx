@@ -3,6 +3,7 @@ import 'dart:ui';
 //Packages
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import 'package:movie_haven/widgets/start_page_movietile.dart';
 
 // Models
 import '../models/movie.dart';
