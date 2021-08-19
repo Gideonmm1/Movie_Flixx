@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.movie_haven">
+    package="com.example.movie_haven"
+    xmlns:tools = "http://schemas.android.com/tools">
+    <uses-sdk android:minSdkVersion="17" />
    <application
         android:label="movie_haven"
         android:icon="@mipmap/ic_launcher">

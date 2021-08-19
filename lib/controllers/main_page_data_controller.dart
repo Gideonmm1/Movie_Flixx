@@ -41,6 +41,18 @@ class MainPageDataController extends StateNotifier<MainPageData> {
     }
   }
 
+  Future<void> getTrailers() async {
+    try {
+      List<String>? trailers = await (_movieService.getTrailer(state.movieID!));
+
+      trailers!.forEach((element) {
+        print(element);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void updateSearchCategory(String _searchCategory) {
     try {
       state = state.copyWith(

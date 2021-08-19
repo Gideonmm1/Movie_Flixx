@@ -42,4 +42,9 @@ class Movie {
     final AppConfig _appConfig = GetIt.instance.get<AppConfig>();
     return "${_appConfig.BASE_IMAGE_API_URL}${this.posterPath}";
   }
+
+  String youtubeURL() {
+    String _youtubeLink = "";
+    return _youtubeLink;
+  }
 }

@@ -62,4 +62,23 @@ class MovieService {
       throw Exception('Couldn\'t perform movies search.');
     }
   }
+
+  Future<List<String>?> getTrailer(int? _movieID) async {
+    Response? _response = await _http.get("/movie/$_movieID/videos");
+    final List<String>? list = [];
+    if (_response!.statusCode == 200) {
+      Map _data = _response.data;
+
+      if (_data['results'] != null) {
+        _data['results'].forEach((element) {
+          if (element["site"] == "YouTube") {
+            list!.add(element["key"]);
+          }
+        });
+        return list;
+      } else {
+        throw Exception('Couldn\'t get movies trailers.');
+      }
+    }
+  }
 }

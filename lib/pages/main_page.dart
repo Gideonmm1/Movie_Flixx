@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 
 //Packages
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import 'package:movie_haven/widgets/start_page_movietile.dart';
+import 'package:movie_haven/pages/videoPlayer.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // Models
 import '../models/movie.dart';
@@ -28,14 +31,22 @@ final selectedMoviePosterUrlProvider = StateProvider<String?>((ref) {
   return _movies.length != 0 ? _movies[0].posterURL() : null;
 });
 
+final selectedMovieNameProvider = StateProvider<String?>((ref) {
+  final _movies = ref.watch(mainPageDataControllerProvider).movies!;
+  return _movies.length != 0 ? _movies[0].name : null;
+});
+
 class MainPage extends ConsumerWidget {
   double? _deviceHeight;
   double? _deviceWidth;
 
   late var _selectedMoviePosterURL;
+  late var _selectedMovieName;
 
   late MainPageDataController _mainPageDataController;
   late MainPageData _mainPageData;
+
+  late VideoPlayer _videoPlayer;
 
   TextEditingController? _searchTextFieldController;
 
@@ -48,6 +59,9 @@ class MainPage extends ConsumerWidget {
     _mainPageData = watch(mainPageDataControllerProvider);
 
     _selectedMoviePosterURL = watch(selectedMoviePosterUrlProvider);
+    _selectedMovieName = watch(selectedMovieNameProvider);
+
+    _videoPlayer = VideoPlayer();
 
     _searchTextFieldController = TextEditingController();
     _searchTextFieldController!.text = _mainPageData.searchText!;
@@ -203,6 +217,17 @@ class MainPage extends ConsumerWidget {
     );
   }
 
+  void _playVideo(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(_selectedMovieName.state!),
+            content: _videoPlayer,
+          );
+        });
+  }
+
   Widget _moviesListViewWidget() {
     final List<Movie> _movies = _mainPageData.movies!;
 
@@ -230,6 +255,11 @@ class MainPage extends ConsumerWidget {
               child: GestureDetector(
                 onTap: () {
                   _selectedMoviePosterURL.state = _movies[_count].posterURL();
+                },
+                onDoubleTap: () {
+                  _selectedMovieName.state = _movies[_count].name;
+                  _mainPageDataController.getTrailers();
+                  _playVideo(_context);
                 },
                 child: MovieTile(
                   movie: _movies[_count],
